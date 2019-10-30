@@ -1,6 +1,4 @@
-import locale
-import Env
-
+import locale, re
 
 class Env:
     loc = ""
