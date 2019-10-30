@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-import locale
-import Env
-
+import locale, re
 
 class Env:
     loc = ""
@@ -14,7 +11,3 @@ class Env:
             self.loc = match.group(1)
         else:
             self.loc = 'fr'
-=======
-class env:
-    loc = 'fr'
->>>>>>> Stashed changes
