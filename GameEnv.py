@@ -1,12 +1,11 @@
 import locale
-import Env
+import re
 
 
 class Env:
     loc = ""
 
-    @staticmethod
-    def init(self):
+    def __init__(self):
         match = re.search(r"\(\'(.+)_.*\',.*\)",
                           str(locale.getdefaultlocale()))
         if (match != None):
