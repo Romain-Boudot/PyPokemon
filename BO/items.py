@@ -6,16 +6,17 @@ from DataHolder import DataHolder
 class Items:
 
     data = {}
-
     attributes = []
 
     def __init__(self, id: int):
         self.data = DataHolder.get("https://pokeapi.co/api/v2/type/%d/" % id)
-        for item in self.data["attributes"]:
-            self.attributes.append(item["name"])
+        self.init()
 
     def __init__(self, url: str):
         self.data = DataHolder.get(url)
+        self.init()
+
+    def init(self):
         for item in self.data["attributes"]:
             self.attributes.append(item["name"])
 

@@ -16,7 +16,7 @@ class Type:
 
     def getDisplayName(self):
         for name in self.data['names']:
-            if name['language']['name'] == env.loc:
+            if name['language']['name'] == Env.loc:
                 return name['name']
 
     def ratioAgainst(self, type):
