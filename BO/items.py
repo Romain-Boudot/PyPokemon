@@ -8,13 +8,19 @@ class Items:
     data = {}
     attributes = []
 
-    def __init__(self, url):
+    def __init__(self, arg):
         """
             initializes the constructor
 
-            :param data: an url
+            :param arg: an url or an id
         """
-        self.data = DataHolder.get(url)
+        if arg is int:
+            self.data = DataHolder.get("https://pokeapi.co/api/v2/item/%d/" % arg)
+        elif arg is str:
+            self.data = DataHolder.get(arg)
+
+        for item in self.data["attributes"]:
+            self.attributes.append(item["name"])
 
     def getId(self):
         """
@@ -46,9 +52,7 @@ class Items:
 
             return type: string.
         """
-        for lang in self.data['names']:
-            if lang["language"]["name"] == Env().loc:
-                return lang["name"]
+        return next(lang for lang in self.data["names"] if lang["language"]["name"] == Env.loc)["name"]
 
     def getSprite(self):
         """
@@ -72,9 +76,6 @@ class Items:
 
             return type: string.
         """
-        for item in self.data["attributes"]:
-            self.attributes.append(item["name"])
-
         return self.attributes
 
     def isHoldable(self):
@@ -83,7 +84,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'holdable' in self.attributes
+        return "holdable" in self.attributes
 
     def isUnderground(self):
         """
@@ -91,7 +92,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'underground' in self.attributes
+        return "underground" in self.attributes
 
     def isHoldablePassive(self):
         """
@@ -99,7 +100,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'holdable-passive' in self.attributes
+        return "holdable-passive" in self.attributes
 
     def isHoldableActive(self):
         """
@@ -107,7 +108,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'holdable-active' in self.attributes
+        return "holdable-active" in self.attributes
 
     def isUsableInBattle(self):
         """
@@ -115,7 +116,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'usable-in-battle' in self.attributes
+        return "usable-in-battle" in self.attributes
 
     def isUsableOverworld(self):
         """
@@ -123,7 +124,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'usable-overworld' in self.attributes
+        return "usable-overworld" in self.attributes
 
     def isConsumable(self):
         """
@@ -131,7 +132,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'consumable' in self.attributes
+        return "consumable" in self.attributes
 
     def isCountable(self):
         """
@@ -139,7 +140,7 @@ class Items:
 
             return type: bollean.
         """
-        return 'countable' in self.attributes
+        return "countable" in self.attributes
 
     def getDisplayDescription(self):
         """
@@ -147,6 +148,4 @@ class Items:
 
             return type: string.
         """
-        for text in self.data['flavor_text_entries']:
-            if text["language"]["name"] == Env().loc:
-                return text["text"]
+        return next(text for text in self.data["flavor_text_entries"] if text["language"]["name"] == Env.loc)["text"]

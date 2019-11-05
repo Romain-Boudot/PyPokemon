@@ -26,6 +26,7 @@ class DataHolder:
             else:
                 data = json.loads(requests.get(url).text)
                 DataHolder.data[uri] = data
+                DataHolder.saveData()
                 return data
         else:
             return None

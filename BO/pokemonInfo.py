@@ -23,13 +23,12 @@ class PokemonInfo:
         """
             initializes the constructor
 
-            :param data: an url
+            :param data: an url of the specie
         """
-        self.pokemonData = DataHolder.get(url)
+        # self.pokemonData = DataHolder.get(url)
         self.speciesData = DataHolder.get(url)
-        # pknmUrl = next(
-        #    var for var in self.speciesData["varieties"] if var["is_default"])["pokemon"]["url"]
-        #self.pokemonData = DataHolder.get(pknmUrl)
+        pknmUrl = next(var for var in self.speciesData["varieties"] if var["is_default"])["pokemon"]["url"]
+        self.pokemonData = DataHolder.get(pknmUrl)
 
     def getId(self):
         """
@@ -46,7 +45,7 @@ class PokemonInfo:
             return type: id.
         """
         pokedex = next(
-            pokedex for pokedex in self.speciesData['pokedex_numbers'] if pokedex["pokedex"]["name"] == "national")
+            pokedex for pokedex in self.speciesData["pokedex_numbers"] if pokedex["pokedex"]["name"] == "national")
         return pokedex["entry_number"]
 
     def getDisplayName(self):
@@ -56,9 +55,9 @@ class PokemonInfo:
             return type: string.
         """
         speciesData = DataHolder.get(self.pokemonData["species"]["url"])
-        for name in speciesData['names']:
-            if name['language']['name'] == Env().loc:
-                return name['name']
+        for name in speciesData["names"]:
+            if name["language"]["name"] == Env().loc:
+                return name["name"]
 
     def getName(self):
         """
@@ -104,8 +103,8 @@ class PokemonInfo:
 
         for name in self.abilitiesData:
             for i in range(0, 10):
-                if name[i]['language']['name'] == Env().loc:
-                    self.abilities.append(name[i]['name'])
+                if name[i]["language"]["name"] == Env().loc:
+                    self.abilities.append(name[i]["name"])
         return self.abilities
 
     def getDisplayTypes(self):
@@ -115,7 +114,7 @@ class PokemonInfo:
             return type : list.
         """
         for kind in self.pokemonData["types"]:
-            self.types.append(Type(kind["type"]['url']).getDisplayName())
+            self.types.append(Type(kind["type"]["url"]).getDisplayName())
 
         return self.types
 
@@ -134,6 +133,6 @@ class PokemonInfo:
             return type: list.
         """
         for move in self.pokemonData["moves"]:
-            self.moves.append(Move(move["move"]['url']).getDisplayName())
+            self.moves.append(Move(move["move"]["url"]).getDisplayName())
 
         return self.moves
