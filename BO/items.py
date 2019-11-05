@@ -6,7 +6,6 @@ from DataHolder import DataHolder
 class Items:
 
     data = {}
-
     attributes = []
 
     def __init__(self, url):
