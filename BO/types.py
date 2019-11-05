@@ -6,9 +6,9 @@ class Type:
     data = {}
 
     def __init__(self, arg):
-        if arg is int:
+        if type(arg) is int:
             self.data = DataHolder.get("https://pokeapi.co/api/v2/type/%d/" % id)
-        elif arg is str:
+        elif type(arg) is str:
             self.data = DataHolder.get(arg)
 
     def getName(self):

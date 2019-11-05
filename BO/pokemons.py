@@ -27,12 +27,13 @@ class Pokemon:
     hp = 0
     moves = {}
     iv = {}
+    captureRate = 0
 
     def __init__(self, arg, ctx: GameCtx):
-        if arg is int:
+        if type(arg) is int:
             self.pokemonData = DataHolder.get("https://pokeapi.co/api/v2/pokemon/%d/" % arg)
             self.speciesData = DataHolder.get("https://pokeapi.co/api/v2/pokemon-species/%d/" % arg)
-        elif arg is str:
+        elif type(arg) is str:
             self.pokemonData = DataHolder.get(arg)
             self.speciesData = DataHolder.get(self.pokemonData["species"]["url"])
         
@@ -62,17 +63,17 @@ class Pokemon:
     def updateStats(self):
         for stat in self.stats.keys():
             base = self.stats[stat]["base_stat"]
-            iv = iv[stat]
+            iv = self.iv[stat]
             ev = self.stats[stat]["effort"]
             if stat == "hp":
-                self.maxHp = (((base + iv) * 2 + (math.sqrt(ev) / 4)) * self.level) / 100 + self.level + 10
+                self.maxHp = math.floor((((base + iv) * 2 + (math.sqrt(ev) / 4)) * self.level) / 100 + self.level + 10)
             else:
-                self.stats[stat]["stat"] = (((base + iv) * 2 + (math.sqrt(ev) / 4)) * self.level) / 100 + 5
+                self.stats[stat]["stat"] = math.floor((((base + iv) * 2 + (math.sqrt(ev) / 4)) * self.level) / 100 + 5)
             
     def gainExp(self, exp):
         self.experience += exp
         nextLevelExp = next(level for level in self.levels if level["level"] == self.level + 1)["experience"]
-        if self.experience > nextLevelExp:
+        if self.experience > nextLevelExp and self.level < 100:
             self.level += 1
             self.updateStats()
             self.gainExp(0) # making sure we passed all the levels
@@ -89,3 +90,5 @@ class Pokemon:
     def getDodge(self):             return self.fightStatModificatorsExtendedStats[self.fightStats["dodge"]]
     def getLevel(self):             return self.level
     def getGender(self):            return self.gender
+    def getName(self):              return self.pokemonData["name"]
+    def getDisplayName(self):       return next(name for name in self.speciesData["names"] if name["language"]["name"] == Env.loc)["name"]

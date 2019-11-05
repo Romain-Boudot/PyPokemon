@@ -13,7 +13,7 @@ class DataHolder:
     def saveData():
         file = open("data", "w")
         file.flush()
-        file.write(json.dumps(DataHolder.data))
+        file.write(json.dumps(DataHolder.data, separators=(",", ":")))
         file.close
 
     @staticmethod

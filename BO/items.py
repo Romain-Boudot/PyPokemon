@@ -14,9 +14,9 @@ class Items:
 
             :param arg: an url or an id
         """
-        if arg is int:
+        if type(arg) is int:
             self.data = DataHolder.get("https://pokeapi.co/api/v2/item/%d/" % arg)
-        elif arg is str:
+        elif type(arg) is str:
             self.data = DataHolder.get(arg)
 
         for item in self.data["attributes"]:

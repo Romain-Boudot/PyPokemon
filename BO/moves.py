@@ -9,9 +9,9 @@ class Move:
     pp = 0
 
     def __init__(self, arg):
-        if arg is int:
+        if type(arg) is int:
             self.data   = DataHolder.get("https://pokeapi.co/api/v2/move/%d/" % arg)
-        elif arg is str:
+        elif type(arg) is str:
             self.data = DataHolder.get(arg)
         self.type   = Type(self.data["type"]["url"])
         self.pp     = self.data["pp"]
