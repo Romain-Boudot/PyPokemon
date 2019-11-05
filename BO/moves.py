@@ -10,11 +10,15 @@ class Move:
 
     def __init__(self, id: int):
         self.data   = DataHolder.get("https://pokeapi.co/api/v2/move/%d/" % id)
-        self.type   = Type(self.data['type']['url'])
-        self.pp     = self.data['pp']
+        self.init()
 
     def __init__(self, url: str):
         self.data = DataHolder.get(url)
+        self.init()
+
+    def init(self):
+        self.type   = Type(self.data['type']['url'])
+        self.pp     = self.data['pp']
 
     def getDisplayName(self):
         for name in self.data['names']:
