@@ -1,4 +1,5 @@
 from BO.pokemons import Pokemon
+import GameLogic
 
 class Player:
 
@@ -13,10 +14,12 @@ class Player:
     score = 0
     playTime = 0
     team = []
+    sprite = None
 
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.sprite = GameLogic.player.Player(self)
 
     def getTeam(self):          return self.team
 
