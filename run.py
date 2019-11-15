@@ -1,3 +1,7 @@
+import pygame
 from GameLogic.game import Game
 
-Game()
+
+pygame.init()
+game = Game()
+game.run()
