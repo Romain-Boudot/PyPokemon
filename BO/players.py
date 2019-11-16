@@ -1,4 +1,4 @@
-from test2 import Pokemon
+#from test2 import Pokemon
 
 
 class players:
@@ -45,3 +45,39 @@ class players:
 
     def getSprite(self):
         return None
+
+    def getMyPokemons(self):
+        return self.pokemonsList
+
+    def addPokemon(self, pokemon):
+        if len(self.pokemonsList) < 6:
+            self.pokemonsList.append(pokemon)
+        else:
+            print("Vous avez atteint la capacité maximal")
+
+    def removePokemon(self, pokemon):
+        if len(self.pokemonsList) > 1:
+            try:
+                self.pokemonsList.remove(pokemon)
+            except:
+                pass
+                #print("Vous ne posséder pas ce pokemon")
+        else:
+            print("Vous ne pouvez pas combatre sans pokemon")
+
+    @staticmethod
+    def IdentityCard(self):
+        print("#############################################")
+        print("#         Carte d'identite du joueur        #")
+        print("#############################################")
+        print("# - Nom : {name}".format(name=self.name))
+        print("#-------------------------------------------")
+        print(
+            "# - Nombre de pokemon : {nbPokemon}".format(nbPokemon=len(self.pokemonsList)))
+        print("#-------------------------------------------")
+        print(
+            "# - monaie : {money}".format(money=self.money))
+        print("#-------------------------------------------")
+        print(
+            "# - score : {score}".format(score=self.score))
+        print("#############################################")
