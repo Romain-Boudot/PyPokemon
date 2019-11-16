@@ -1,28 +1,22 @@
 #from test2 import Pokemon
 
+class Player:
 
-class players:
+    # genders
+    MALE = 0
+    FEMALE = 1
 
     id = 0
-    name = ""
+    gender = 0
+    name = "unset"
     money = 0
     score = 0
     playTime = 0
-    pokemonsList = []
+    team = []
+    sprite = None
 
-    def __init__(self):
-        pass
-
-    def getId(self):
-        return self.id
-
-    def setId(self, id):
+    def __init__(self, id, name):
         self.id = id
-
-    def getName(self):
-        return self.name
-
-    def setName(self, name):
         self.name = name
 
     def getMoney(self, money):

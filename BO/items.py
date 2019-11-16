@@ -6,67 +6,146 @@ from DataHolder import DataHolder
 class Items:
 
     data = {}
-
     attributes = []
 
-    def __init__(self, id: int):
-        self.data = DataHolder.get("https://pokeapi.co/api/v2/type/%d/" % id)
-        for item in self.data["attributes"]:
-            self.attributes.append(item["name"])
+    def __init__(self, arg):
+        """
+            initializes the constructor
 
-    def __init__(self, url: str):
-        self.data = DataHolder.get(url)
+            :param arg: an url or an id
+        """
+        if type(arg) is int:
+            self.data = DataHolder.get("https://pokeapi.co/api/v2/item/%d/" % arg)
+        elif type(arg) is str:
+            self.data = DataHolder.get(arg)
+
         for item in self.data["attributes"]:
             self.attributes.append(item["name"])
 
     def getId(self):
+        """
+            Returns the id of the item.
+
+            return type: id.
+        """
         return self.data["id"]
 
     def getName(self):
+        """
+            Returns the name of the item.
+
+            return type: string.
+        """
         return self.data["name"]
 
     def getCost(self):
+        """
+            returns the price of the item.
+
+            return type: int.
+        """
         return self.data["cost"]
 
     def getDisplayName(self):
-        for lang in self.data['names']:
-            if lang["language"]["name"] == Env.loc:
-                return lang["name"]
+        """
+            Returns the name of the item according to language.
+
+            return type: string.
+        """
+        return next(lang for lang in self.data["names"] if lang["language"]["name"] == Env.loc)["name"]
 
     def getSprite(self):
+        """
+            Returns the sprite of the item.
+
+            return type: string.
+        """
         return self.data["sprites"]["default"]
 
     def getCategory(self):
+        """
+            returns the category of the item.
+
+            return type: string.
+        """
         return self.data["category"]["name"]
 
     def getAttributes(self):
+        """
+            returns the attributes of the item.
+
+            return type: string.
+        """
         return self.attributes
 
     def isHoldable(self):
-        return 'holdable' in self.attributes
+        """
+            returns true if the item is holdable false otherwise.
+
+            return type: bollean.
+        """
+        return "holdable" in self.attributes
 
     def isUnderground(self):
-        return 'underground' in self.attributes
+        """
+            returns true if the item is Underground false otherwise.
+
+            return type: bollean.
+        """
+        return "underground" in self.attributes
 
     def isHoldablePassive(self):
-        return 'holdable-passive' in self.attributes
+        """
+            returns true if the item is hodable passive false otherwise.
+
+            return type: bollean.
+        """
+        return "holdable-passive" in self.attributes
 
     def isHoldableActive(self):
-        return 'holdable-active' in self.attributes
+        """
+            returns true if the item is hodable active false otherwise.
+
+            return type: bollean.
+        """
+        return "holdable-active" in self.attributes
 
     def isUsableInBattle(self):
-        return 'usable-in-battle' in self.attributes
+        """
+            returns true if the item is usable in battle false otherwise.
+
+            return type: bollean.
+        """
+        return "usable-in-battle" in self.attributes
 
     def isUsableOverworld(self):
-        return 'usable-overworld' in self.attributes
+        """
+            returns true if the item is usable Overworld false otherwise.
+
+            return type: bollean.
+        """
+        return "usable-overworld" in self.attributes
 
     def isConsumable(self):
-        return 'consumable' in self.attributes
+        """
+            returns true if the item is consumable false otherwise.
+
+            return type: bollean.
+        """
+        return "consumable" in self.attributes
 
     def isCountable(self):
-        return 'countable' in self.attributes
+        """
+            returns true if the item is countable false otherwise.
 
-    def getDescription(self):
-        for text in self.data['flavor_text_entries']:
-            if text["language"]["name"] == Env.loc:
-                return text["text"]
+            return type: bollean.
+        """
+        return "countable" in self.attributes
+
+    def getDisplayDescription(self):
+        """
+            returns the description according to language.
+
+            return type: string.
+        """
+        return next(text for text in self.data["flavor_text_entries"] if text["language"]["name"] == Env.loc)["text"]

@@ -2,7 +2,6 @@
 
 import time
 
-
 class Menu:
     @staticmethod
     def ShowQuestion(sentance, responses):
