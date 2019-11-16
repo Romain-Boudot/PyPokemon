@@ -15,21 +15,6 @@ class Pokemon:
     fightStatModificatorsBasicStats = [.25, .29, .33, .4, .5, .67, 1, 1.5, 2, 2.5, 3, 3.5, 4]
     fightStatModificatorsExtendedStats = [.33, .38, .43, .5, .6, .73, 1, 1.33, 1.67, 2, 2.33, 2.67, 3]
 
-    pokemonData = {}
-    speciesData = {}
-    levels = []
-    level = 0
-    experience = 0
-    type1 = None
-    type2 = None
-    stats = {}
-    fightStats = []
-    maxHp = 0
-    hp = 0
-    moves = [None, None, None, None]
-    iv = {}
-    captureRate = 0
-
     def __init__(self, arg):
         if type(arg) is int:
             self.pokemonData = DataHolder.get("https://pokeapi.co/api/v2/pokemon/%d/" % arg)
@@ -41,20 +26,24 @@ class Pokemon:
         self.level = GameCtx.getRandomPokemonLevel()
         self.captureRate = self.speciesData["capture_rate"]
         self.level = GameCtx.getRandomPokemonLevel()
-        self.hp = self.maxHp
         self.gender = Pokemon.NOSEX if self.speciesData["gender_rate"] == -1 else Pokemon.FEMALE if random.randint(0, 8) < self.speciesData["gender_rate"] else Pokemon.MALE
         self.iv = GameCtx.genRadomIV()
+        self.moves = []
         moveCursor = 0
         for move in self.pokemonData["moves"]:
-            gen = next(g for g in move["version_group_details"] if g["version_group"]["name"] == "red-blue")
+            gen = next((g for g in move["version_group_details"] if g["version_group"]["name"] == "red-blue"), False)
             if gen and gen["move_learn_method"]["name"] == "level-up" and gen["level_learned_at"] <= self.level:
-                self.moves[moveCursor] = Move(move["url"])
+                if len(self.moves) < 4:
+                    self.moves.append(Move(move["move"]["url"]))
+                else:
+                    self.moves[moveCursor] = Move(move["move"]["url"])
                 moveCursor = (moveCursor + 1) % 4
 
         self.levels = DataHolder.get(self.speciesData["growth_rate"]["url"])["levels"]
         self.experience = next(level for level in self.levels if level["level"] == self.level)["experience"]
-        self.type1 = Type(next(type for type in self.pokemonData["types"] if type["slot"] == 1)["type"]["url"])
-        self.type2 = Type(next(type for type in self.pokemonData["types"] if type["slot"] == 2)["type"]["url"])
+        self.type1 = Type(next(t for t in self.pokemonData["types"] if t["slot"] == 1)["type"]["url"])
+        type2 = next((t for t in self.pokemonData["types"] if t["slot"] == 2), None)
+        self.type2 = Type(type2["type"]["url"]) if type2 != None else None
         self.stats = {
             "speed":            next(stat for stat in self.pokemonData["stats"] if stat["stat"]["name"] == "speed"),
             "special-defense":  next(stat for stat in self.pokemonData["stats"] if stat["stat"]["name"] == "special-defense"),

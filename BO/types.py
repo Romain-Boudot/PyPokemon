@@ -26,7 +26,7 @@ class Type:
             if d["name"] == type.getName(): return 2
         for n in self.data["damage_relations"]["no_damage_to"]:
             if n["name"] == type.getName(): return 0
-        return 0
+        return 1
 
     def getSprite(self):
         return {

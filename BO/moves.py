@@ -27,7 +27,7 @@ class Move:
     def addPP(self, amount): self.pp += amount
     def setFullPP(self): self.pp = self.data["pp"]
     def getAccuracy(self): return self.data["accuracy"]
-    def getPower(self): return self.data["power"]
+    def getPower(self): return self.data["power"] if self.data["power"] != None else 0
     def getEffects(self): return self.data["effect_changes"]
     def getCritRate(self): return self.data["meta"]["crit_rate"]
     def getDrain(self): return self.data["meta"]["drain"]

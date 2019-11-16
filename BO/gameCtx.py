@@ -4,7 +4,7 @@ class GameCtx:
 
     @staticmethod
     def getRandomPokemonLevel():
-        return choice(range(5, 8))
+        return choice(range(50, 55))
 
     @staticmethod
     def genRadomIV():

@@ -13,7 +13,7 @@ class DataHolder:
     def saveData():
         file = open("data", "w")
         file.flush()
-        file.write(base64.b64encode(json.dumps(DataHolder.data, separators=(",", ":"))))
+        file.write(base64.b64encode(json.dumps(DataHolder.data, separators=(",", ":")).encode('utf-8')).decode('utf-8'))
         file.close
 
     @staticmethod
