@@ -1,4 +1,4 @@
-import requests, json, re
+import requests, json, re, base64
 
 class DataHolder:
     data = {}
@@ -6,14 +6,14 @@ class DataHolder:
     @staticmethod
     def loadData():
         file = open("data", "r")
-        DataHolder.data = json.loads("".join(file.readlines()))
+        DataHolder.data = json.loads("".join(base64.b64decode(file.readlines())))
         file.close()
     
     @staticmethod
     def saveData():
         file = open("data", "w")
         file.flush()
-        file.write(json.dumps(DataHolder.data, separators=(",", ":")))
+        file.write(base64.b64encode(json.dumps(DataHolder.data, separators=(",", ":")).encode('utf-8')).decode('utf-8'))
         file.close
 
     @staticmethod

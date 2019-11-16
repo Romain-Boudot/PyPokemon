@@ -1,5 +1,6 @@
 from DataHolder import DataHolder
 from GameEnv import Env
+from BO.moves import Move
 from BO.types import Type
 from BO.gameCtx import GameCtx
 import random, math
@@ -14,22 +15,7 @@ class Pokemon:
     fightStatModificatorsBasicStats = [.25, .29, .33, .4, .5, .67, 1, 1.5, 2, 2.5, 3, 3.5, 4]
     fightStatModificatorsExtendedStats = [.33, .38, .43, .5, .6, .73, 1, 1.33, 1.67, 2, 2.33, 2.67, 3]
 
-    pokemonData = {}
-    speciesData = {}
-    levels = []
-    level = 0
-    experience = 0
-    type1 = None
-    type2 = None
-    stats = []
-    fightStats = []
-    maxHp = 0
-    hp = 0
-    moves = {}
-    iv = {}
-    captureRate = 0
-
-    def __init__(self, arg, ctx: GameCtx):
+    def __init__(self, arg):
         if type(arg) is int:
             self.pokemonData = DataHolder.get("https://pokeapi.co/api/v2/pokemon/%d/" % arg)
             self.speciesData = DataHolder.get("https://pokeapi.co/api/v2/pokemon-species/%d/" % arg)
@@ -37,17 +23,27 @@ class Pokemon:
             self.pokemonData = DataHolder.get(arg)
             self.speciesData = DataHolder.get(self.pokemonData["species"]["url"])
         
-        self.level = ctx.getRandomPokemonLevel()
+        self.level = GameCtx.getRandomPokemonLevel()
         self.captureRate = self.speciesData["capture_rate"]
-        self.level = ctx.getRandomPokemonLevel()
-        self.hp = self.maxHp
+        self.level = GameCtx.getRandomPokemonLevel()
         self.gender = Pokemon.NOSEX if self.speciesData["gender_rate"] == -1 else Pokemon.FEMALE if random.randint(0, 8) < self.speciesData["gender_rate"] else Pokemon.MALE
-        self.iv = ctx.genRadomIV()
+        self.iv = GameCtx.genRadomIV()
+        self.moves = []
+        moveCursor = 0
+        for move in self.pokemonData["moves"]:
+            gen = next((g for g in move["version_group_details"] if g["version_group"]["name"] == "red-blue"), False)
+            if gen and gen["move_learn_method"]["name"] == "level-up" and gen["level_learned_at"] <= self.level:
+                if len(self.moves) < 4:
+                    self.moves.append(Move(move["move"]["url"]))
+                else:
+                    self.moves[moveCursor] = Move(move["move"]["url"])
+                moveCursor = (moveCursor + 1) % 4
 
         self.levels = DataHolder.get(self.speciesData["growth_rate"]["url"])["levels"]
         self.experience = next(level for level in self.levels if level["level"] == self.level)["experience"]
-        self.type1 = Type(next(type for type in self.pokemonData["types"] if type["slot"] == 1)["type"]["url"])
-        self.type2 = Type(next(type for type in self.pokemonData["types"] if type["slot"] == 2)["type"]["url"])
+        self.type1 = Type(next(t for t in self.pokemonData["types"] if t["slot"] == 1)["type"]["url"])
+        type2 = next((t for t in self.pokemonData["types"] if t["slot"] == 2), None)
+        self.type2 = Type(type2["type"]["url"]) if type2 != None else None
         self.stats = {
             "speed":            next(stat for stat in self.pokemonData["stats"] if stat["stat"]["name"] == "speed"),
             "special-defense":  next(stat for stat in self.pokemonData["stats"] if stat["stat"]["name"] == "special-defense"),
@@ -92,3 +88,7 @@ class Pokemon:
     def getGender(self):            return self.gender
     def getName(self):              return self.pokemonData["name"]
     def getDisplayName(self):       return next(name for name in self.speciesData["names"] if name["language"]["name"] == Env.loc)["name"]
+    def addHP(self, amount):        self.hp += amount
+    def getMoves(self):             return self.moves
+    def getType1(self):             return self.type1
+    def getType2(self):             return self.type2

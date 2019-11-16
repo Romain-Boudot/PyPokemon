@@ -2,10 +2,12 @@ from random import choice, randint
 
 class GameCtx:
 
-    def getRandomPokemonLevel(self):
-        return choice(range(5, 8))
+    @staticmethod
+    def getRandomPokemonLevel():
+        return choice(range(50, 55))
 
-    def genRadomIV(self):
+    @staticmethod
+    def genRadomIV():
         return {
             "speed": randint(0, 31),
             "special-defense": randint(0, 31),
@@ -14,3 +16,7 @@ class GameCtx:
             "attack": randint(0, 31),
             "hp": randint(0, 31)
         }
+
+    @staticmethod
+    def getRandomPokemonId():
+        return choice(range(1, 150))

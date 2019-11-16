@@ -13,6 +13,7 @@ class Player:
     score = 0
     playTime = 0
     team = []
+    sprite = None
 
     def __init__(self, id, name):
         self.id = id
