@@ -1,13 +1,15 @@
 from DataHolder import DataHolder
 from GameEnv import Env
 
+
 class Type:
 
     data = {}
 
     def __init__(self, arg):
         if type(arg) is int:
-            self.data = DataHolder.get("https://pokeapi.co/api/v2/type/%d/" % id)
+            self.data = DataHolder.get(
+                "https://pokeapi.co/api/v2/type/%d/" % id)
         elif type(arg) is str:
             self.data = DataHolder.get(arg)
 
@@ -21,11 +23,14 @@ class Type:
 
     def ratioAgainst(self, type):
         for h in self.data["damage_relations"]["half_damage_to"]:
-            if h["name"] == type.getName(): return 0.5
+            if h["name"] == type.getName():
+                return 0.5
         for d in self.data["damage_relations"]["double_damage_to"]:
-            if d["name"] == type.getName(): return 2
+            if d["name"] == type.getName():
+                return 2
         for n in self.data["damage_relations"]["no_damage_to"]:
-            if n["name"] == type.getName(): return 0
+            if n["name"] == type.getName():
+                return 0
         return 1
 
     def getSprite(self):

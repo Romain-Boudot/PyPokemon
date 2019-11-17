@@ -1,4 +1,5 @@
-#from test2 import Pokemon
+# from test2 import Pokemon
+
 
 class Player:
 
@@ -14,12 +15,19 @@ class Player:
     playTime = 0
     team = []
     sprite = None
+    pokemonsList = []
 
-    def __init__(self, id, name):
-        self.id = id
+    # def __init__(self, id, name):
+    #    self.id = id
+    #    self.name = name
+
+    def getName(self):
+        return self.name
+
+    def setName(self, name):
         self.name = name
 
-    def getMoney(self, money):
+    def getMoney(self):
         return self.money
 
     def setMoney(self, money):
@@ -41,7 +49,7 @@ class Player:
         return None
 
     def getMyPokemons(self):
-        return self.pokemonsList
+        return self.pokemonsList[0]
 
     def addPokemon(self, pokemon):
         if len(self.pokemonsList) < 6:
@@ -55,11 +63,19 @@ class Player:
                 self.pokemonsList.remove(pokemon)
             except:
                 pass
-                #print("Vous ne posséder pas ce pokemon")
+                # print("Vous ne posséder pas ce pokemon")
         else:
             print("Vous ne pouvez pas combatre sans pokemon")
 
-    @staticmethod
+    def showMyPokemons(self):
+        print("#############################################")
+        print("#                Mes pokemons               #")
+        print("#############################################")
+        for i in range(len(self.pokemonsList)):
+            print("# {index} : {pokemon}".format(
+                index=i+1, pokemon=self.pokemonsList[i]))
+        print("#############################################")
+
     def IdentityCard(self):
         print("#############################################")
         print("#         Carte d'identite du joueur        #")

@@ -26,9 +26,10 @@ class PokemonInfo:
             :param data: an url of the specie
         """
         # self.pokemonData = DataHolder.get(url)
-        self.speciesData = DataHolder.get(url)
-        pknmUrl = next(var for var in self.speciesData["varieties"] if var["is_default"])["pokemon"]["url"]
-        self.pokemonData = DataHolder.get(pknmUrl)
+        # self.speciesData = DataHolder.get(url)
+        # pknmUrl = next(var for var in self.speciesData["varieties"] if var["is_default"])[
+        #    "pokemon"]["url"]
+        self.pokemonData = DataHolder.get(url)
 
     def getId(self):
         """
@@ -136,3 +137,28 @@ class PokemonInfo:
             self.moves.append(Move(move["move"]["url"]).getDisplayName())
 
         return self.moves
+
+    def DisplayInfoPokemon(self):
+        print("#############################################")
+        print("#     Information détaillé du pokemon       #")
+        print("#############################################")
+        print("# - Nom : {name}".format(name=PokemonInfo.getDisplayName(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - hauteur : {height}".format(height=PokemonInfo.getHeight(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - largueur : {weight}".format(weight=PokemonInfo.getWeight(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - Aptitudes : {abilities}".format(abilities=PokemonInfo.getDisplayAbilities(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - type(s) : {type}".format(type=PokemonInfo.getDisplayTypes(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - zone de découverte : {zone}".format(zone=PokemonInfo.getArea(self)))
+        print("#-------------------------------------------")
+        print(
+            "# - ces Attaques : {moves}".format(moves=PokemonInfo.getDisplayMoves(self)))
+        print("#-------------------------------------------")
